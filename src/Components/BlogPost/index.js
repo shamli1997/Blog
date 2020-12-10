@@ -1,21 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '../UI/Card'
+import blogPost from '../../Data/blog.json'
+
 import './style.css'
-const BlogPost = () => {
+
+const BlogPost = (props) => {
+    const [post, setPost] = useState({})
+    const [postId, setPostId] = useState("")
+    useEffect(() => {
+        const postId = props.match.params.postId;
+
+        const post = blogPost.data.find(post => post.id == postId);
+        setPost(post)
+        setPostId(postId)
+        console.log(post);
+    }, [post, props.match.params.postId]);
+
     return (
 
         <div className="blogPostContainer">
             <Card>
                 <div className="blogHeader">
-                    <span className="blogCategory">Featured</span>
-                    <h1 className="postTitle">Beautiful</h1>
-                    <span className="postedBy">posted on 25th jan 2020 by shamli </span>
+                    <span className="blogCategory">{post.blogCategory}</span>
+                    <h1 className="postTitle">{post.blogTitle}</h1>
+                    <span className="postedBy">posted on {post.postedOn} by {post.author} </span>
                 </div>
 
                 <div className="postImageContainer">
-                    <img src="https://images.unsplash.com/photo-1445052693476-5134dfe40f70?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="post img" />
+                    <img src={post.blogImage} alt="post img" />
                 </div>
-
+                <div className="postContent">
+                    <h3>{post.blogTitle}</h3>
+                    <p>{post.blogText}</p>
+                </div>
             </Card>
         </div>
 
